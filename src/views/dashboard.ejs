@@ -106,11 +106,24 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Plate Number</label>
-                                <input type="text" class="form-control" name="plate_number" required>
+                                <input type="text" class="form-control" name="plate_number" required 
+                                       pattern="([A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{1,4}$|^[A-Z]{1,2}[0-9]{5}$)"
+                                       placeholder="TN01AB1234 or AB12345 (Dubai)"
+                                       title="Enter valid plate: Indian format (TN01AB1234) or Dubai format (AB12345)"
+                                       style="text-transform: uppercase;">
+                                <div class="invalid-feedback">
+                                    Please enter a valid vehicle plate number
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Mobile Number</label>
-                                <input type="text" class="form-control" name="mobile_number" required>
+                                <input type="text" class="form-control" name="mobile_number" required 
+                                       pattern="(^([6-9][0-9]{9}$|^971[0-9]{8}$|^5[0-9]{8}$)" 
+                                       placeholder="9876543210 or 971501234567"
+                                       title="Enter valid Indian mobile (10 digits starting 6-9) or Dubai number (971xxxxxxx or 5xxxxxxxx)">
+                                <div class="invalid-feedback">
+                                    Please enter a valid mobile number (India: 10 digits starting 6-9, Dubai: 971xxxxxxx or 5xxxxxxxx)
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -203,6 +216,31 @@
         // Create/Update
         document.getElementById('visitorForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Mobile number validation
+            const mobileInput = document.querySelector('input[name="mobile_number"]');
+            const mobilePattern = /^([6-9][0-9]{9}$|^971[0-9]{8}$|^5[0-9]{8}$)/;
+            
+            // Plate number validation
+            const plateInput = document.querySelector('input[name="plate_number"]');
+            const platePattern = /^([A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{1,4}$|^[A-Z]{1,2}[0-9]{5}$)/;
+            
+            if (!platePattern.test(plateInput.value.toUpperCase())) {
+                plateInput.classList.add('is-invalid');
+                plateInput.focus();
+                return;
+            } else {
+                plateInput.classList.remove('is-invalid');
+            }
+            
+            if (!mobilePattern.test(mobileInput.value)) {
+                mobileInput.classList.add('is-invalid');
+                mobileInput.focus();
+                return;
+            } else {
+                mobileInput.classList.remove('is-invalid');
+            }
+            
             const id = document.getElementById('visitorId').value;
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
