@@ -37,7 +37,8 @@ class VisitorService {
             where: whereClause,
             limit,
             offset,
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'DESC']],
+            attributes: ['id', 'plate_number', 'visit_date', 'entry_time', 'entry_gate', 'visitor_name', 'mobile_number', 'purpose', 'vehicle_type', 'status', 'exit_time', 'exit_gate', 'notes', 'createdAt', 'updatedAt']
         });
 
         return {
