@@ -180,11 +180,16 @@
     <script>
         // Set max date to today for visit date
         document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            const todayFormatted = `${day}-${month}-${year}`;
+            
             const dateInput = document.querySelector('input[name="visit_date"]');
             if (dateInput) {
-                dateInput.max = today;
-                dateInput.value = today; // Set today as default
+                dateInput.max = `${year}-${month}-${day}`; // HTML5 date format (YYYY-MM-DD)
+                dateInput.value = todayFormatted; // Display format (DD-MM-YYYY)
             }
         });
 
